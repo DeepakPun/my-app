@@ -1,0 +1,28 @@
+# version: '3'
+services:
+  api:
+    restart: always
+    # image: pundeepak/api
+    # specify either image OR build context, pundeepak/<name> is from docker hub
+    build:
+      context: ./api
+      dockerfile: Dockerfile.dev
+    ports:
+      - '3000:3000'
+    volumes:
+      - /app/node_modules
+      - ./api:/app
+  client:
+    restart: always
+    # image: pundeepak/client
+    # specify either image OR build context
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - api
+    ports:
+      - '5173:5173'
+    volumes:
+      - /app/node_modules
+      - ./client:/app
